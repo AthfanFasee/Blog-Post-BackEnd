@@ -10,9 +10,6 @@ const postSchema = mongoose.Schema({
         type:String,
         required:[true, 'Your Post is Empty']
     },
-    aurthor: {
-        type:String,
-    },
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref:'User',

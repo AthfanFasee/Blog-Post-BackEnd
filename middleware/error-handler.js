@@ -7,7 +7,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         msg: err.message || 'Something went wrong'
     }
     
-    return res.status(customError.statusCode).send(customError.msg);
+    return res.status(customError.statusCode).json({msg: customError.msg});
 }
 
 

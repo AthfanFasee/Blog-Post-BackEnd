@@ -6,7 +6,9 @@ import 'express-async-errors';
 import rateLimit from 'express-rate-limit';
 import 'dotenv/config';
 import BlogRouter from './routes/blogs.js';
+import AuthRouter from './routes/auth.js';
 import notFound from './middleware/not-found.js';
+import errorHandlerMiddleware from './middleware/error-handler.js';
 import connect from './db/connect.js';
 
 
@@ -29,7 +31,11 @@ app.use(xss());
 
 //Routes
 app.use('/api/v1/blogs', BlogRouter);
+app.use('/api/v1/auth', AuthRouter);
 
+
+//Error Handler
+app.use(errorHandlerMiddleware)
 
 //NotFound 
 app.use(notFound);

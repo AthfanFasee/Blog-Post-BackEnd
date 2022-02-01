@@ -6,9 +6,6 @@ const commentsSchema = mongoose.Schema({
         type:String,
         required:[true, 'This field cannot be empty']
     },
-    aurthor: {
-        type:String,
-    },
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref:'User',
