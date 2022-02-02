@@ -1,4 +1,4 @@
-import User from '../model/user.js';
+import User from '../model/User.js';
 import { StatusCodes } from 'http-status-codes';
 import unauthenticatedError from '../errors/unauthenticated.js';
 import badRequestError from '../errors/badRequest.js';
@@ -25,7 +25,7 @@ export const login = async (req, res) => {
     }
 
     const isPasswordCorrect = await user.checkPassword(password)
-    console.log(isPasswordCorrect)
+
     if(!isPasswordCorrect) {
         throw new unauthenticatedError('Invalid email or password');
     }
