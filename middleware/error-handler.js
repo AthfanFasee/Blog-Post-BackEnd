@@ -15,7 +15,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     //If email or password or useName isn't provided while registering (ValidationError)
     if (err.name === 'ValidationError') {
         customError.statusCode = StatusCodes.BAD_REQUEST;
-        customError.msg = Object.values(err.errors).map((item) => item.message).join(',');
+        customError.msg = Object.values(err.errors).map((item) => item.message).join(', ');
     }
 
     //If wrong format or syntax of id provided in link (Cast Error)

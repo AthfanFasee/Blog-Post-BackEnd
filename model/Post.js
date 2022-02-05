@@ -18,6 +18,9 @@ const postSchema = mongoose.Schema({
     userName: {
         type:String,
         required:true
+    },
+    likedBy: {
+        type:Array,     
     }
 
 
