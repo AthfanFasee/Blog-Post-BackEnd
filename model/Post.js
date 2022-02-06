@@ -20,7 +20,9 @@ const postSchema = mongoose.Schema({
         required:true
     },
     likedBy: {
-        type:Array,     
+        type:Array,
+        unique: true,
+
     }
 
 

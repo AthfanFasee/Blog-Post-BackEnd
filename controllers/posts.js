@@ -16,9 +16,7 @@ export const getAllPosts = async (req, res) => {
     }
 
     let data = Post.find(queryObject);
-    const dataCount = data.length;
-    console.log(data)
-
+   
     //Sorting
     if(sort) {
         const sortList = sort.split(',').join(' '); //Sorting if the user provides any sorting queries
@@ -75,15 +73,15 @@ export const deletePost = async (req, res) => {
 //Update single element in array(adding like)
 
 export const addLike = async (req, res) => {
-    const {id} = req.body;
-    await Post.updateOne({_id: req.params.id}, {$push:{likedBy: id}},{new: true, runValidations:true});
-    res.status(StatusCodes.OK).send();
+    const {id} = req.body;                                    //addtoSet won't add duplicate values none like $push. In this way same user can't like a post twice              
+    const post = await Post.findByIdAndUpdate({_id: req.params.id}, {$addToSet:{likedBy: id}},{new: true, runValidations:true});
+    res.status(StatusCodes.OK).json({post});
 }
 
 //removing single element in array(removing like)
 export const removeLike = async (req, res) => {
     const {id} = req.body;
-    await Post.updateOne({_id: req.params.id}, {$pull:{likedBy: id}});
-    res.status(StatusCodes.OK).send();
+    const post = await Post.findByIdAndUpdate({_id: req.params.id}, {$pull:{likedBy: id}}, {new: true, runValidations:true});
+    res.status(StatusCodes.OK).json({post});
 }
    
