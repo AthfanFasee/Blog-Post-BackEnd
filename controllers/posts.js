@@ -6,8 +6,37 @@ import Post from '../model/Post.js';
 
 //All Posts
 export const getAllPosts = async (req, res) => {
-    const posts = await Post.find({});
-    res.status(StatusCodes.OK).json({posts});
+
+    const {title, sort} = req.query;
+    const queryObject = {};
+
+    //finding by title if needed
+    if(title) {
+        queryObject.title = { $regex: title, $options: 'i' };
+    }
+
+    let data = Post.find(queryObject);
+    const dataCount = data.length;
+    console.log(data)
+
+    //Sorting
+    if(sort) {
+        const sortList = sort.split(',').join(' '); //Sorting if the user provides any sorting queries
+        data = data.sort(sortList);
+    } else {
+        data = data.sort('-createdAt') ;  //Default sorting
+    }
+
+    //Setting up Pages
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 3;
+    const skip = (page -1) * limit;
+    
+    data = data.skip(skip).limit(limit);
+
+    const posts = await data    //This post variable will await data to finish all queries sorting and stuffs
+    res.status(StatusCodes.OK).json({posts, noOfPosts: posts.length});
 }
 
 //Create Posts
@@ -20,10 +49,12 @@ export const createPost = async (req, res) => {
 
 //UpdatePosts
 export const updatePost = async (req, res) => {
+    //Showing error if data isnt provided
     const {title, postText} = req.body;
     if(!title, !postText) {
         throw new badRequestError('Pls provide both title and PostText');
     }
+
     const post = await Post.findByIdAndUpdate({_id: req.params.id, createdBy: req.user.userID},
         req.body, {new: true, runValidations:true});
     if(!post) {
@@ -34,25 +65,25 @@ export const updatePost = async (req, res) => {
 
 //DeletePosts
 export const deletePost = async (req, res) => {
-    const post = await Post.findByIdAndDelete({_id: req.params.id})
+    const post = await Post.findByIdAndDelete({_id: req.params.id});
     if(!post) {
         throw new notFoundError('Post not found');
     }
     res.status(StatusCodes.OK).send();
 }
 
-//Update single element in array
+//Update single element in array(adding like)
 
 export const addLike = async (req, res) => {
     const {id} = req.body;
-    const post = await Post.updateOne({_id: req.params.id}, {$push:{likedBy: id}},{new: true, runValidations:true})
-    res.status(StatusCodes.OK).json({post})
+    await Post.updateOne({_id: req.params.id}, {$push:{likedBy: id}},{new: true, runValidations:true});
+    res.status(StatusCodes.OK).send();
 }
 
-//removing element in array
+//removing single element in array(removing like)
 export const removeLike = async (req, res) => {
     const {id} = req.body;
-    const post = await Post.updateOne({_id: req.params.id}, {$pull:{likedBy: id}})
-    res.status(StatusCodes.OK).json({post})
+    await Post.updateOne({_id: req.params.id}, {$pull:{likedBy: id}});
+    res.status(StatusCodes.OK).send();
 }
    
