@@ -7,6 +7,7 @@ import rateLimiter from 'express-rate-limit';
 import 'dotenv/config';
 import BlogRouter from './routes/posts.js';
 import AuthRouter from './routes/auth.js';
+import CommentsRouter from './routes/comments.js';
 import notFound from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 import connect from './db/connect.js';
@@ -29,6 +30,7 @@ app.use(xss());
 
 //Routes
 app.use('/api/v1/posts', BlogRouter);
+app.use('/api/v1/posts/comments', CommentsRouter);
 app.use('/api/v1/auth', AuthRouter);
 
 

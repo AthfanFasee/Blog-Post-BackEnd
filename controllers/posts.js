@@ -1,8 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 import badRequestError from '../errors/badRequest.js';
 import notFoundError from '../errors/notFound.js';
-
 import Post from '../model/Post.js';
+
+
+
 
 //All Posts
 export const getAllPosts = async (req, res) => {
@@ -10,12 +12,17 @@ export const getAllPosts = async (req, res) => {
     const {title, sort} = req.query;
     const queryObject = {};
 
+    //Getting total no of documents to calculate needed amount of pages
+    const count = await Post.count()
+    const noOfPages = Math.ceil(count/6);
+    
     //finding by title if needed
     if(title) {
         queryObject.title = { $regex: title, $options: 'i' };
     }
 
-    let data = Post.find(queryObject);
+    let data = Post.find(queryObject)
+      
    
     //Sorting
     if(sort) {
@@ -28,13 +35,13 @@ export const getAllPosts = async (req, res) => {
     //Setting up Pages
 
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 3;
+    const limit = Number(req.query.limit) || 6;
     const skip = (page -1) * limit;
     
     data = data.skip(skip).limit(limit);
 
     const posts = await data    //This post variable will await data to finish all queries sorting and stuffs
-    res.status(StatusCodes.OK).json({posts, noOfPosts: posts.length});
+    res.status(StatusCodes.OK).json({posts, noOfPages});
 }
 
 //Create Posts
