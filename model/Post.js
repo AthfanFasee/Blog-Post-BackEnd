@@ -24,7 +24,7 @@ const postSchema = mongoose.Schema({
         unique: true,
 
     }
-
+    
 
 }, {timestamps:true})
 

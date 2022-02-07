@@ -25,11 +25,23 @@ export const getAllPosts = async (req, res) => {
       
    
     //Sorting
-    if(sort) {
+    
+    if(sort === 'likesCount') {
+        Post.aggregate([
+            {
+              $addFields: {
+                totalLikesCount: { $sum: "$likedBy" } 
+              }
+            }
+         ])
+         data.sort('likedBy')
+
+    } else if(sort){
         const sortList = sort.split(',').join(' '); //Sorting if the user provides any sorting queries
         data = data.sort(sortList);
     } else {
         data = data.sort('-createdAt') ;  //Default sorting
+
     }
 
     //Setting up Pages

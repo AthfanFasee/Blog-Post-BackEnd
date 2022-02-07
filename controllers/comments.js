@@ -5,9 +5,12 @@ export const getComment = async (req, res) => {
     const comments = await Comment.find({Post: req.params.id}) //params kastam enda query um try panlam
     res.status(StatusCodes.OK).json({comments, noOfComments: comments.length});
 }
+
 export const createComment = async (req, res) => {
-    req.body.Post = req.user.userID;
+    req.body.createdBy = req.user.userID;
     req.body.userName = req.user.name;
+    req.body.Post = req.params.id;
+    
     const post = await Comment.create(req.body)
     res.status(StatusCodes.CREATED).json({post})
 }

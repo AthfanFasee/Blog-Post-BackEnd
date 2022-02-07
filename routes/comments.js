@@ -5,7 +5,7 @@ import authentication from '../middleware/authentication.js';
 const router = express.Router();
 
 router.get('/:id', getComment);
-router.post('/', authentication, createComment);
+router.post('/:id', authentication, createComment);
 router.delete('/:id', authentication, deleteComment);
 
 export default router;
