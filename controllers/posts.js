@@ -9,7 +9,7 @@ import Post from '../model/Post.js';
 //All Posts
 export const getAllPosts = async (req, res) => {
 
-    const {title, sort} = req.query;
+    const {title, sort, id} = req.query;
     const queryObject = {};
 
     //Getting total no of documents to calculate needed amount of pages
@@ -21,9 +21,15 @@ export const getAllPosts = async (req, res) => {
         queryObject.title = { $regex: title, $options: 'i' };
     }
 
+    if(id) {
+        queryObject.createdBy = id;
+       }
+
     let data = Post.find(queryObject)
-      
+
+    //Finding only the current user's posts  
    
+
     //Sorting
     
     if(sort === 'likesCount') {

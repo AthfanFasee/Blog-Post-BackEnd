@@ -9,7 +9,6 @@ export const getComment = async (req, res) => {
 export const createComment = async (req, res) => {
     req.body.createdBy = req.user.userID;
     req.body.userName = req.user.name;
-    req.body.Post = req.params.id;
     
     const post = await Comment.create(req.body)
     res.status(StatusCodes.CREATED).json({post})
