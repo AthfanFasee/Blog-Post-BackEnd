@@ -8,7 +8,7 @@ import badRequestError from '../errors/badRequest.js';
 export const register = async (req, res) => {
     const user = await User.create({...req.body});
     const token = user.createJWT();
-    res.status(StatusCodes.CREATED).json({user: {name: user.name}, token});
+    res.status(StatusCodes.CREATED).json({user: {name: user.name, id: user._id}, token});
 }
 
 

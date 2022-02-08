@@ -15,14 +15,9 @@ const commentsSchema = mongoose.Schema({
         required:true
     },
     Post: {
-        type: mongoose.Types.ObjectId,  //to connect with the post this comment belongs to
-        ref:'Post',
+        type:String,  //to connect with the post this comment belongs to
         required:true
     },
-    likedBy:{
-        type:Array
-    }
-
 
 }, {timestamps:true})
 

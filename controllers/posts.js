@@ -9,21 +9,25 @@ import Post from '../model/Post.js';
 //All Posts
 export const getAllPosts = async (req, res) => {
 
-    const {title, sort} = req.query;
+    const {title, sort, id} = req.query;
     const queryObject = {};
 
-    //Getting total no of documents to calculate needed amount of pages
-    const count = await Post.count()
-    const noOfPages = Math.ceil(count/6);
+    
     
     //finding by title if needed
     if(title) {
         queryObject.title = { $regex: title, $options: 'i' };
     }
 
+    //Finding only the current user's posts 
+    if(id) {
+        queryObject.createdBy = id;
+       }
+
     let data = Post.find(queryObject)
-      
-   
+
+  
+
     //Sorting
     
     if(sort === 'likesCount') {
@@ -41,7 +45,6 @@ export const getAllPosts = async (req, res) => {
         data = data.sort(sortList);
     } else {
         data = data.sort('-createdAt') ;  //Default sorting
-
     }
 
     //Setting up Pages
@@ -53,6 +56,11 @@ export const getAllPosts = async (req, res) => {
     data = data.skip(skip).limit(limit);
 
     const posts = await data    //This post variable will await data to finish all queries sorting and stuffs
+    
+    //Getting total no of documents to calculate needed amount of pages
+    const count = await Post.find(queryObject).count()
+    const noOfPages = Math.ceil(count/6);
+   
     res.status(StatusCodes.OK).json({posts, noOfPages});
 }
 
