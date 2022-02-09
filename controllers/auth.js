@@ -4,14 +4,14 @@ import unauthenticatedError from '../errors/unauthenticated.js';
 import badRequestError from '../errors/badRequest.js';
 
 
-
+//Register
 export const register = async (req, res) => {
     const user = await User.create({...req.body});
     const token = user.createJWT();
     res.status(StatusCodes.CREATED).json({user: {name: user.name, id: user._id}, token});
 }
 
-
+//Login
 export const login = async (req, res) => {
     const {email, password} = req.body;
     if(!email || !password) {
@@ -24,7 +24,7 @@ export const login = async (req, res) => {
         throw new unauthenticatedError('Invalid email. Please Register first');
     }
 
-    const isPasswordCorrect = await user.checkPassword(password)
+    const isPasswordCorrect = await user.checkPassword(password);
 
     if(!isPasswordCorrect) {
         throw new unauthenticatedError('Invalid email or password');

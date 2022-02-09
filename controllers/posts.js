@@ -19,12 +19,12 @@ export const getAllPosts = async (req, res) => {
         queryObject.title = { $regex: title, $options: 'i' };
     }
 
-    //Finding only the current user's posts 
+    //Finding only the current user's posts If needed
     if(id) {
         queryObject.createdBy = id;
        }
 
-    let data = Post.find(queryObject)
+    let data = Post.find(queryObject);
 
   
 
@@ -38,7 +38,7 @@ export const getAllPosts = async (req, res) => {
               }
             }
          ])
-         data.sort('likedBy')
+         data.sort('likedBy');
 
     } else if(sort){
         const sortList = sort.split(',').join(' '); //Sorting if the user provides any sorting queries
@@ -55,10 +55,10 @@ export const getAllPosts = async (req, res) => {
     
     data = data.skip(skip).limit(limit);
 
-    const posts = await data    //This post variable will await data to finish all queries sorting and stuffs
+    const posts = await data;    //This post variable will await data to finish all queries sorting and stuffs
     
     //Getting total no of documents to calculate needed amount of pages
-    const count = await Post.find(queryObject).count()
+    const count = await Post.find(queryObject).count();
     const noOfPages = Math.ceil(count/6);
    
     res.status(StatusCodes.OK).json({posts, noOfPages});
@@ -72,9 +72,9 @@ export const createPost = async (req, res) => {
     res.status(StatusCodes.CREATED).json({post});
 }
 
-//UpdatePosts
+//Update Posts
 export const updatePost = async (req, res) => {
-    //Showing error if data isnt provided
+    
     const {title, postText} = req.body;
     if(!title, !postText) {
         throw new badRequestError('Pls provide both title and PostText');
@@ -88,7 +88,7 @@ export const updatePost = async (req, res) => {
     res.status(StatusCodes.OK).json({post});
 }
 
-//DeletePosts
+//Delete Posts
 export const deletePost = async (req, res) => {
     const post = await Post.findByIdAndDelete({_id: req.params.id});
     if(!post) {

@@ -35,7 +35,7 @@ app.use('/api/v1/auth', AuthRouter);
 
 
 //Error Handler
-app.use(errorHandlerMiddleware)
+app.use(errorHandlerMiddleware);
 
 //NotFound 
 app.use(notFound);
@@ -46,4 +46,4 @@ const start = async () => {
   await connect(process.env.MONGO_URI);
   app.listen(port, console.log('Server Upp'));
 }
-start()
+start();

@@ -9,7 +9,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     //If duplicate email provided while registering (Duplicate error)
     if (err.code && err.code === 11000) {
         customError.statusCode = StatusCodes.BAD_REQUEST;
-        customError.msg = `${Object.keys(err.keyvalue)} is already registered. Pls Login`
+        customError.msg = `${Object.keys(err.keyvalue)} is already registered. Pls Login`;
     }
 
     //If email or password or useName isn't provided while registering (ValidationError)
