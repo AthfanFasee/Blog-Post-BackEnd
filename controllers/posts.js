@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import badRequestError from '../errors/badRequest.js';
 import notFoundError from '../errors/notFound.js';
-import Post from '../model/Post.js';
+import Post from '../model/post.js';
 
 
 

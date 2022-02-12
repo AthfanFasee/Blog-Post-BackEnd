@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import Comment from '../model/Comment.js';
+import Comment from '../model/comment.js';
 
 //Get Comments for a Single Post
 export const getComment = async (req, res) => {
