@@ -26,7 +26,9 @@ app.use(cors());
 app.use(helmet());
 app.use(xss());
 
-
+app.get('/', (req, res) => {
+  res.send('Deployed')
+})
 
 //Routes
 app.use('/api/v1/posts', BlogRouter);

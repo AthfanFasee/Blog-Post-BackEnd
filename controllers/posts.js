@@ -19,24 +19,14 @@ export const getAllPosts = async (req, res) => {
         queryObject.title = { $regex: title, $options: 'i' };
     }
 
-<<<<<<< HEAD
     //Finding only the current user's posts If needed
-=======
->>>>>>> 3c194e8309c4f13469ab5fca9f5a3ac45726ba15
     if(id) {
         queryObject.createdBy = id;
        }
 
-<<<<<<< HEAD
     let data = Post.find(queryObject);
 
   
-=======
-    let data = Post.find(queryObject)
-
-    //Finding only the current user's posts  
-   
->>>>>>> 3c194e8309c4f13469ab5fca9f5a3ac45726ba15
 
     //Sorting
     
