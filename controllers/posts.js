@@ -32,14 +32,14 @@ export const getAllPosts = async (req, res) => {
     
     //Sorting by LikesCount if requested.
     if(sort === 'likesCount') {
-        Post.aggregate([
+        data = Post.aggregate([         //data should be redefined to new collections where totalLikesCount field is added
             {
               $addFields: {
-                totalLikesCount: { $sum: "$likedBy" } 
+                totalLikesCount: { $size: "$likedBy" } 
               }
-            }
+            }    
          ])
-         data = data.sort('likedBy');
+         data = data.sort('-totalLikesCount');
 
     } else if(sort){
         const sortList = sort.split(',').join(' '); //Sorting if the user provides any sorting queries
