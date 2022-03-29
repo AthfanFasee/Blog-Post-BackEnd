@@ -10,6 +10,10 @@ const postSchema = mongoose.Schema({
         type:String,
         required:[true, 'Your Post is Empty']
     },
+    img:{
+        type:String,
+        required:[true, 'Pls Provide an Image']
+    },
     createdBy: {
         type: mongoose.Types.ObjectId,
         ref:'User',
